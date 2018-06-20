@@ -35,7 +35,7 @@ Go there and read some of the linked articles, if you don't know what futures ar
 
 ## Notable points about this fork
 
-The TypeScript are not implemented correctly, since I have no experience with TypeScript.
+The TypeScript types are not implemented correctly, since I have no experience with TypeScript.
 
 Also I've removed the e2e tests for the examples, since the original tests were failing for me and I didn't want to fix them *and* update the tests. If someone likes fluture enough to contribute, please do. 
 
