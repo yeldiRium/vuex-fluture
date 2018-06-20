@@ -24,6 +24,15 @@ $ npm install
 $ npm run dev # serve examples at localhost:8080
 ```
 
+
+## Why this fork
+
+I really like the fluture library.
+
+So much that I avoid using Promises if possible and use Futures instead.
+
+Go there and read some of the linked articles, if you don't know what futures are. They are worth it.
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
