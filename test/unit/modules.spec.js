@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from '../../dist/vuex.common.js'
+import Fluture from 'fluture'
 
 const TEST = 'TEST'
 
@@ -560,17 +561,20 @@ describe('Modules', () => {
           b: {
             actions: {
               [TEST] () {
-                return new Promise(r => r(2))
+                return Fluture((reject, resolve) => resolve(2))
               }
             }
           }
         }
       })
-      store.dispatch(TEST).then(res => {
-        expect(res[0]).toBe(1)
-        expect(res[1]).toBe(2)
-        done()
-      })
+      store.dispatch(TEST).fork(
+        done.fail,
+        res => {
+          expect(res.length).toBe(2)
+          expect(res[0]).toBe(1)
+          expect(res[1]).toBe(2)
+          done()
+        })
     })
 
     it('root actions dispatched in namespaced modules', done => {
@@ -593,7 +597,7 @@ describe('Modules', () => {
               [TEST]: {
                 root: true,
                 handler () {
-                  return new Promise(r => r(2))
+                  return Fluture((reject, resolve) => resolve(2))
                 }
               }
             }
@@ -620,12 +624,14 @@ describe('Modules', () => {
           }
         }
       })
-      store.dispatch(TEST).then(res => {
-        expect(res.length).toBe(2)
-        expect(res[0]).toBe(1)
-        expect(res[1]).toBe(2)
-        done()
-      })
+      store.dispatch(TEST).fork(
+        done.fail,
+        res => {
+          expect(res.length).toBe(2)
+          expect(res[0]).toBe(1)
+          expect(res[1]).toBe(2)
+          done()
+        })
     })
 
     it('plugins', function () {

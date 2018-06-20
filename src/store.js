@@ -1,7 +1,9 @@
+import Fluture from 'fluture'
+
 import applyMixin from './mixin'
 import devtoolPlugin from './plugins/devtool'
 import ModuleCollection from './module/module-collection'
-import { forEachValue, isObject, isPromise, assert } from './util'
+import { forEachValue, isObject, assert } from './util'
 
 let Vue // bind on install
 
@@ -16,7 +18,7 @@ export class Store {
 
     if (process.env.NODE_ENV !== 'production') {
       assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
-      assert(typeof Promise !== 'undefined', `vuex requires a Promise polyfill in this browser.`)
+      assert(typeof Fluture !== 'undefined', `vuex requires a Promise polyfill in this browser.`)
       assert(this instanceof Store, `store must be called with the new operator.`)
     }
 
@@ -131,7 +133,7 @@ export class Store {
     this._actionSubscribers.forEach(sub => sub(action, this.state))
 
     return entry.length > 1
-      ? Promise.all(entry.map(handler => handler(payload)))
+      ? Fluture.parallel(Infinity, entry.map(handler => handler(payload)))
       : entry[0](payload)
   }
 
@@ -407,13 +409,13 @@ function registerAction (store, type, handler, local) {
       rootGetters: store.getters,
       rootState: store.state
     }, payload, cb)
-    if (!isPromise(res)) {
-      res = Promise.resolve(res)
+    if (!Fluture.isFuture(res)) {
+      res = Fluture.of(res)
     }
     if (store._devtoolHook) {
-      return res.catch(err => {
+      return res.mapRej(err => {
         store._devtoolHook.emit('vuex:error', err)
-        throw err
+        return err
       })
     } else {
       return res

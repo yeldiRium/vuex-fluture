@@ -1,5 +1,6 @@
 import Vue from 'vue/dist/vue.common.js'
 import Vuex from '../../dist/vuex.common.js'
+import Fluture from 'fluture'
 
 const TEST = 'TEST'
 const isSSR = process.env.VUE_ENV === 'server'
@@ -100,7 +101,7 @@ describe('Store', () => {
     expect(store.state.a).toBe(3)
   })
 
-  it('dispatching actions, with returned Promise', done => {
+  it('dispatching actions with returned Fluture', done => {
     const store = new Vuex.Store({
       state: {
         a: 1
@@ -112,7 +113,7 @@ describe('Store', () => {
       },
       actions: {
         [TEST] ({ commit }, n) {
-          return new Promise(resolve => {
+          return Fluture((reject, resolve) => {
             setTimeout(() => {
               commit(TEST, n)
               resolve()
@@ -122,13 +123,16 @@ describe('Store', () => {
       }
     })
     expect(store.state.a).toBe(1)
-    store.dispatch(TEST, 2).then(() => {
-      expect(store.state.a).toBe(3)
-      done()
-    })
+    store.dispatch(TEST, 2).fork(
+      done.fail,
+      () => {
+        expect(store.state.a).toBe(3)
+        done()
+      }
+    )
   })
 
-  it('composing actions with async/await', done => {
+  it('composing actions with chain', done => {
     const store = new Vuex.Store({
       state: {
         a: 1
@@ -140,32 +144,41 @@ describe('Store', () => {
       },
       actions: {
         [TEST] ({ commit }, n) {
-          return new Promise(resolve => {
+          return Fluture((reject, resolve) => {
             setTimeout(() => {
               commit(TEST, n)
               resolve()
             }, 0)
           })
         },
-        two: async ({ commit, dispatch }, n) => {
-          await dispatch(TEST, 1)
-          expect(store.state.a).toBe(2)
-          commit(TEST, n)
+        two: ({ commit, dispatch }, n) => {
+          return dispatch(TEST, 1).chain(
+            () => Fluture((reject, resolve) => {
+              setTimeout(() => {
+                expect(store.state.a).toBe(2)
+                commit(TEST, n)
+                resolve()
+              }, 0)
+            })
+          )
         }
       }
     })
     expect(store.state.a).toBe(1)
-    store.dispatch('two', 3).then(() => {
-      expect(store.state.a).toBe(5)
-      done()
-    })
+    store.dispatch('two', 3).fork(
+      done.fail,
+      () => {
+        expect(store.state.a).toBe(5)
+        done()
+      }
+    )
   })
 
-  it('detecting action Promise errors', done => {
+  it('detecting action Fluture errors', done => {
     const store = new Vuex.Store({
       actions: {
         [TEST] () {
-          return new Promise((resolve, reject) => {
+          return Fluture((reject, resolve) => {
             reject('no')
           })
         }
@@ -175,15 +188,18 @@ describe('Store', () => {
     store._devtoolHook = {
       emit: spy
     }
-    const thenSpy = jasmine.createSpy()
+    const chainSpy = jasmine.createSpy()
     store.dispatch(TEST)
-      .then(thenSpy)
-      .catch(err => {
-        expect(thenSpy).not.toHaveBeenCalled()
-        expect(err).toBe('no')
-        expect(spy).toHaveBeenCalledWith('vuex:error', 'no')
-        done()
-      })
+      .chain(chainSpy)
+      .fork(
+        err => {
+          expect(chainSpy).not.toHaveBeenCalled()
+          expect(err).toBe('no')
+          expect(spy).toHaveBeenCalledWith('vuex:error', 'no')
+          done()
+        },
+        done.fail
+      )
   })
 
   it('asserts dispatched type', () => {
@@ -253,7 +269,8 @@ describe('Store', () => {
 
     const store = new Vuex.Store({
       mutations: {
-        [TEST] () {}
+        [TEST] () {
+        }
       }
     })
     store.commit(TEST, {}, { silent: true })
@@ -301,7 +318,8 @@ describe('Store', () => {
     const store = new Vuex.Store({
       state: {},
       mutations: {
-        [TEST]: () => {}
+        [TEST]: () => {
+        }
       }
     })
 
@@ -330,7 +348,9 @@ describe('Store', () => {
         strict: true
       })
       Vue.config.silent = true
-      expect(() => { store.state.a++ }).toThrow()
+      expect(() => {
+        store.state.a++
+      }).toThrow()
       Vue.config.silent = false
     })
 
