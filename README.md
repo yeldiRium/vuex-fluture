@@ -1,6 +1,6 @@
 # Vuex [![Build Status](https://circleci.com/gh/vuejs/vuex/tree/dev.png?style=shield)](https://circleci.com/gh/vuejs/vuex)
 
-> Centralized State Management for Vue.js.
+> Centralized State Management for Vue.js with Support for [fluture Futures](https://github.com/fluture-js/Fluture).
 
 <p align="center">
   <img width="700px" src="https://raw.githubusercontent.com/vuejs/vuex/dev/docs/.vuepress/public/vuex.png">
