@@ -38,8 +38,8 @@ export declare class Store<S> {
 export declare function install(Vue: typeof _Vue): void;
 
 export interface Dispatch {
-  (type: string, payload?: any, options?: DispatchOptions): Future<any>;
-  <P extends Payload>(payloadWithType: P, options?: DispatchOptions): Future<any>;
+  (type: string, payload?: any, options?: DispatchOptions): Future;
+  <P extends Payload>(payloadWithType: P, options?: DispatchOptions): Future;
 }
 
 export interface Commit {
