@@ -2,6 +2,7 @@ import _Vue, { WatchOptions } from "vue";
 
 // augment typings of Vue.js
 import "./vue";
+import Future from "fluture";
 
 export * from "./helpers";
 
@@ -37,8 +38,8 @@ export declare class Store<S> {
 export declare function install(Vue: typeof _Vue): void;
 
 export interface Dispatch {
-  (type: string, payload?: any, options?: DispatchOptions): Promise<any>;
-  <P extends Payload>(payloadWithType: P, options?: DispatchOptions): Promise<any>;
+  (type: string, payload?: any, options?: DispatchOptions): Future<any>;
+  <P extends Payload>(payloadWithType: P, options?: DispatchOptions): Future<any>;
 }
 
 export interface Commit {

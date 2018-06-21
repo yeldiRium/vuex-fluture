@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import { Dispatch, Commit } from './index';
+import Future from "fluture";
 
 type Dictionary<T> = { [key: string]: T };
 type Computed = () => any;
 type MutationMethod = (...args: any[]) => void;
-type ActionMethod = (...args: any[]) => Promise<any>;
+type ActionMethod = (...args: any[]) => Future<any>;
 type CustomVue = Vue & Dictionary<any>;
 
 interface Mapper<R> {
