@@ -5,7 +5,7 @@ import Future from "fluture";
 type Dictionary<T> = { [key: string]: T };
 type Computed = () => any;
 type MutationMethod = (...args: any[]) => void;
-type ActionMethod = (...args: any[]) => Future;
+type ActionMethod = (...args: any[]) => Future<any, any>;
 type CustomVue = Vue & Dictionary<any>;
 
 interface Mapper<R> {

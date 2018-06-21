@@ -14,11 +14,11 @@ namespace StoreInstance {
   store.state.value;
   store.getters.foo;
 
-  store.dispatch("foo", { amount: 1 }).then(() => {});
+  store.dispatch("foo", { amount: 1 }).fork(() => {}, () => {});
   store.dispatch({
     type: "foo",
     amount: 1
-  }).then(() => {});
+  }).fork(() => {}, () => {});
 
   store.commit("foo", { amount: 1 });
   store.commit({
