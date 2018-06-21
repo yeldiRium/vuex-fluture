@@ -1,5 +1,5 @@
 /**
- * vuex v1.0.0-fluture
+ * vuex v1.0.4-fluture
  * (c) 2018 Evan You
  * @license MIT
  */
@@ -972,7 +972,7 @@ function getModuleByNamespace (store, helper, namespace) {
 var index_esm = {
   Store: Store,
   install: install,
-  version: '1.0.0-fluture',
+  version: '1.0.4-fluture',
   mapState: mapState,
   mapMutations: mapMutations,
   mapGetters: mapGetters,
