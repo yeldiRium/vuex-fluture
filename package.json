@@ -32,7 +32,8 @@
     "url": "git+https://github.com/vuejs/vuex.git"
   },
   "authors": [
-    "Evan You", "Hannes Leutloff"
+    "Evan You",
+    "Hannes Leutloff"
   ],
   "license": "MIT",
   "bugs": {
