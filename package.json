@@ -1,6 +1,6 @@
 {
   "name": "vuex-fluture",
-  "version": "1.0.4-fluture",
+  "version": "1.0.5-fluture",
   "description": "state management for Vue.js with support for the fluture library",
   "main": "dist/vuex.common.js",
   "module": "dist/vuex.esm.js",
