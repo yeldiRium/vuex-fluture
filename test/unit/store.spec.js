@@ -1,6 +1,6 @@
 import Vue from 'vue/dist/vue.common.js'
 import Vuex from '../../dist/vuex.common.js'
-import Fluture from 'fluture'
+import * as Fluture from 'fluture'
 
 const TEST = 'TEST'
 const isSSR = process.env.VUE_ENV === 'server'
@@ -113,7 +113,7 @@ describe('Store', () => {
       },
       actions: {
         [TEST] ({ commit }, n) {
-          return Fluture((reject, resolve) => {
+          return Fluture.Future((reject, resolve) => {
             setTimeout(() => {
               commit(TEST, n)
               resolve()
@@ -144,7 +144,7 @@ describe('Store', () => {
       },
       actions: {
         [TEST] ({ commit }, n) {
-          return Fluture((reject, resolve) => {
+          return Fluture.Future((reject, resolve) => {
             setTimeout(() => {
               commit(TEST, n)
               resolve()
@@ -153,7 +153,7 @@ describe('Store', () => {
         },
         two: ({ commit, dispatch }, n) => {
           return dispatch(TEST, 1).chain(
-            () => Fluture((reject, resolve) => {
+            () => Fluture.Future((reject, resolve) => {
               setTimeout(() => {
                 expect(store.state.a).toBe(2)
                 commit(TEST, n)
@@ -178,7 +178,7 @@ describe('Store', () => {
     const store = new Vuex.Store({
       actions: {
         [TEST] () {
-          return Fluture((reject, resolve) => {
+          return Fluture.Future((reject, resolve) => {
             reject('no')
           })
         }

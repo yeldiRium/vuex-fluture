@@ -52,7 +52,7 @@
     "eslint": "^3.19.0",
     "eslint-plugin-vue-libs": "^1.2.0",
     "express": "^4.14.1",
-    "fluture": "^8.0.2",
+    "fluture": "^10.1.0",
     "jasmine": "2.8.0",
     "jasmine-core": "2.8.0",
     "nightwatch": "^0.9.12",

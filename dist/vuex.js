@@ -4,12 +4,10 @@
  * @license MIT
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('fluture')) :
-	typeof define === 'function' && define.amd ? define(['fluture'], factory) :
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('fluture/index.js')) :
+	typeof define === 'function' && define.amd ? define(['fluture/index.js'], factory) :
 	(global.Vuex = factory(global.Fluture));
 }(this, (function (Fluture) { 'use strict';
-
-Fluture = Fluture && Fluture.hasOwnProperty('default') ? Fluture['default'] : Fluture;
 
 var applyMixin = function (Vue) {
   var version = Number(Vue.version.split('.')[0]);

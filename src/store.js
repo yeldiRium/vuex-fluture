@@ -1,4 +1,4 @@
-import Fluture from 'fluture'
+import * as Fluture from 'fluture/index.js'
 
 import applyMixin from './mixin'
 import devtoolPlugin from './plugins/devtool'

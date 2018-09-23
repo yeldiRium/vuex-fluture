@@ -5,9 +5,7 @@
  */
 'use strict';
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var Fluture = _interopDefault(require('fluture'));
+var Fluture = require('fluture/index.js');
 
 var applyMixin = function (Vue) {
   var version = Number(Vue.version.split('.')[0]);

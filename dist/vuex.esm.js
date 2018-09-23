@@ -3,7 +3,8 @@
  * (c) 2018 Evan You
  * @license MIT
  */
-import Fluture from 'fluture';
+import { isFuture, of, parallel } from 'fluture/index.js';
+import * as Fluture from 'fluture/index.js';
 
 var applyMixin = function (Vue) {
   var version = Number(Vue.version.split('.')[0]);
@@ -424,7 +425,7 @@ Store.prototype.dispatch = function dispatch (_type, _payload) {
   this._actionSubscribers.forEach(function (sub) { return sub(action, this$1.state); });
 
   return entry.length > 1
-    ? Fluture.parallel(Infinity, entry.map(function (handler) { return handler(payload); }))
+    ? parallel(Infinity, entry.map(function (handler) { return handler(payload); }))
     : entry[0](payload)
 };
 
@@ -711,8 +712,8 @@ function registerAction (store, type, handler, local) {
       rootGetters: store.getters,
       rootState: store.state
     }, payload, cb);
-    if (!Fluture.isFuture(res)) {
-      res = Fluture.of(res);
+    if (!isFuture(res)) {
+      res = of(res);
     }
     if (store._devtoolHook) {
       return res.mapRej(function (err) {

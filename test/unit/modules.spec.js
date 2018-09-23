@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from '../../dist/vuex.common.js'
-import Fluture from 'fluture'
+import * as Fluture from 'fluture'
 
 const TEST = 'TEST'
 
@@ -561,7 +561,7 @@ describe('Modules', () => {
           b: {
             actions: {
               [TEST] () {
-                return Fluture((reject, resolve) => resolve(2))
+                return Fluture.Future((reject, resolve) => resolve(2))
               }
             }
           }
@@ -597,7 +597,7 @@ describe('Modules', () => {
               [TEST]: {
                 root: true,
                 handler () {
-                  return Fluture((reject, resolve) => resolve(2))
+                  return Fluture.Future((reject, resolve) => resolve(2))
                 }
               }
             }
